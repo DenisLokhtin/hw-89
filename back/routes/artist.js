@@ -1,5 +1,7 @@
 const express = require('express');
 const Artist = require('../models/Artist');
+const auth = require('../middleware/auth');
+const permit = require('../middleware/permit');
 
 const router = express.Router();
 
@@ -14,7 +16,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.post('/', upload.single('file'), async (req, res) => {
+router.post('/', [auth, upload.single('file')], async (req, res) => {
     const body = {
         title: req.body.title,
         information: req.body.information,

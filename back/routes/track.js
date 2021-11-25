@@ -1,5 +1,7 @@
 const express = require('express');
 const Track = require('../models/Track');
+const auth = require('../middleware/auth');
+const permit = require('../middleware/permit');
 
 const router = express.Router();
 
@@ -30,7 +32,7 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
     const body = {
         title: req.body.title,
         album: req.body.album,
