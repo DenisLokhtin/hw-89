@@ -13,7 +13,6 @@ const App = (props) => {
             <Header/>
             <div className="container">
                 <div className="container-inner">
-                    <BrowserRouter>
                         <Switch>
                             <Route path="/" exact component={Main}/>
                             <Route path="/music" exact component={Main}/>
@@ -21,7 +20,6 @@ const App = (props) => {
                             <Route path="/register" exact component={Register}/>
                             <Route path="/login" exact component={Login}/>
                         </Switch>
-                    </BrowserRouter>
                 </div>
             </div>
         </div>

@@ -1,24 +1,17 @@
 import React from 'react';
-import {withRouter} from "react-router-dom";
+import {Link} from "react-router-dom";
+import './Header.css'
 
 const Header = (props) => {
-    const toLogin = () => {
-        return props.history.push('/login');
-    };
-
-    const toRegister = () => {
-        return props.history.push('/register');
-    };
-
     return (
         <div className="header">
-            <h1>MUSIC</h1>
+            <Link to="/" classname="header-title">MUSIC</Link>
             <div className="authorization">
-                <span onClick={toLogin}>Login</span>
-                <span>Register</span>
+                <Link to="/login">Login</Link>
+                <Link to="/register">Register</Link>
             </div>
         </div>
     );
 };
 
-export default withRouter(Header);
+export default Header;
