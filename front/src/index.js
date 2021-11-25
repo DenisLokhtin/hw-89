@@ -1,23 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {BrowserRouter} from "react-router-dom";
-import {applyMiddleware, compose, createStore} from "redux";
-import thunk from "redux-thunk";
+import { BrowserRouter as Router } from "react-router-dom";
 import {Provider} from "react-redux";
+import store from "./store/configureStore";
+import {ToastContainer} from "react-toastify";
+import history from "./history";
 import App from './App';
-import reducer from "./store/reducers/Reducer";
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
-const store = createStore(reducer, composeEnhancers(
-    applyMiddleware(thunk)
-));
+import 'react-toastify/dist/ReactToastify.css';
 
 const app = (
     <Provider store={store}>
-        <BrowserRouter>
+        <Router history={history}>
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
             <App/>
-        </BrowserRouter>
+        </Router>
     </Provider>
 );
 

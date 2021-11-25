@@ -17,7 +17,7 @@ const port = 8001;
 app.use('/album', album);
 app.use('/track', track);
 app.use('/artist', artist);
-app.use('/user', user);
+app.use('/users', user);
 app.use('/track_history', trackHistory);
 
 

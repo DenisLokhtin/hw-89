@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {fetchAlbums} from "../../store/actions/Actions";
+import {fetchAlbums} from "../../store/actions/actions";
 import './Albums.css'
 import AlbumCard from "../AlbumCard/AlbumCard";
 

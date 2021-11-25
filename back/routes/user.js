@@ -1,55 +1,58 @@
 const express = require('express');
 const User = require('../models/User');
+const auth = require("../middleware/auth");
 
 const router = express.Router();
 
 router.post('/', async (req, res) => {
-    const body = {
-        username: req.body.username,
-        password: req.body.password,
-        token: ''
-    };
-
-    const Username = await User.findOne({username: req.body.username});
-
-    if (Username) {
-        return res.status(418).send({error: 'Such user already exists!'});
-    }
-
-    const user = new User(body);
-
     try {
+        const user = new User({
+            username: req.body.username,
+            password: req.body.password,
+        });
+
         user.generateToken();
         await user.save();
         res.send(user);
-    } catch (e) {
-        console.log(e)
-        res.sendStatus(400);
+    } catch(error) {
+        res.status(400).send(error);
     }
 });
 
 router.post('/sessions', async (req, res) => {
-
     const user = await User.findOne({username: req.body.username});
 
     if (!user) {
-        return res.status(400).send({error: 'Username not found'})
+        return res.status(401).send({message: 'Credentials are wrong!'});
     }
 
     const isMatch = await user.checkPassword(req.body.password);
 
     if (!isMatch) {
-        return res.status(400).send({error: 'password is wrong'})
+        return res.status(401).send({message: 'Credentials are wrong!'});
     }
 
-    try {
-        user.generateToken(10);
-        await user.save();
-        res.send({message: 'username and password correct', user})
-    } catch (e) {
-        console.log(e)
-        res.sendStatus(400);
-    }
+    user.generateToken();
+    await user.save({validateBeforeSave: false});
+
+    res.send({message: 'Username and password correct!', user});
+});
+
+router.delete('/sessions', async (req, res) => {
+    const token = req.get('Authorization');
+    const success = {message: 'Success'};
+
+    if (!token) return res.send(success);
+
+    const user = await User.findOne({token});
+
+    if (!user) return res.send(success);
+
+    user.generateToken();
+
+    await user.save({validateBeforeSave: false});
+
+    return res.send(success);
 });
 
 module.exports = router;

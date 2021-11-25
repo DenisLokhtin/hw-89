@@ -1,27 +1,36 @@
-const {nanoid} = require("nanoid");
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-
-const Schema = mongoose.Schema;
+const {nanoid} = require("nanoid");
 
 const SALT_WORK_FACTOR = 10;
 
-const UserSchema = new Schema({
+const UserSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
         unique: true,
+        validate: {
+            validator: async value => {
+                const user = await User.findOne({username: value});
+                if (user) return false;
+            },
+            message: 'This user is already registered',
+        },
     },
     password: {
         type: String,
         required: true,
-        unique: true,
     },
     token: {
         type: String,
         required: true,
-        unique: true,
     },
+    role: {
+        type: String,
+        required: true,
+        default: 'user',
+        enum: ['admin', 'user'],
+    }
 });
 
 UserSchema.pre('save', async function (next) {
@@ -39,16 +48,18 @@ UserSchema.set('toJSON', {
     transform: (doc, ret, options) => {
         delete ret.password;
         return ret;
-    }
+    },
 });
 
 UserSchema.methods.checkPassword = function (password) {
     return bcrypt.compare(password, this.password);
 };
 
-UserSchema.methods.generateToken = function (size) {
-    this.token = nanoid(size)
+UserSchema.methods.generateToken = function () {
+    this.token = nanoid();
 };
 
 const User = mongoose.model('User', UserSchema);
+
 module.exports = User;
+

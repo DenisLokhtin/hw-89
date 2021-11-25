@@ -1,13 +1,13 @@
 import React, {useEffect} from 'react';
 import ArtistCard from "../ArtistCard/ArtistCard";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchArtist} from "../../store/actions/Actions";
+import {fetchArtist} from "../../store/actions/actions";
 import './Main.css'
 
 
 const Main = (props) => {
     const dispatch = useDispatch();
-    const artist = useSelector(state => state.artist);
+    const artist = useSelector(state => state.reducer.artist);
 
     useEffect(() => {
         dispatch(fetchArtist())

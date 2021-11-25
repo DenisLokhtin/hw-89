@@ -1,4 +1,4 @@
-import {SET_ARTIST, SET_ALBUMS, SET_TRACKS} from "../actions/Actions";
+import {SET_ARTIST, SET_ALBUMS, SET_TRACKS} from "../actions/actions";
 
 const initialState = {
   artist: [],

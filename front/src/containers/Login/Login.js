@@ -1,32 +1,34 @@
 import React, {useState} from 'react';
-import './Login.css'
+import {useDispatch} from "react-redux";
+import {loginUser} from "../../store/actions/usersAction";
+import './Login.css';
 
 const Login = () => {
+    const dispatch = useDispatch();
 
     const [user, setUser] = useState({
         username: '',
-        password: '',
+        password: ''
     });
 
     const inputChangeHandler = e => {
-      const {name, value} = e.target;
+        const {name, value} = e.target;
 
-      setUser(prevState => ({...prevState, [name]: value}));
+        setUser(prevState => ({...prevState, [name]: value}));
     };
 
-    const submitFormHandler = (e) => {
+    const submitFormHandler = e => {
         e.preventDefault();
-    }
+        dispatch(loginUser({...user}));
+    };
 
     return (
-        <div className="login">
-            <h2>Login</h2>
-            <form>
-                <div>
-                    <input defaultValue={user.username} onChange={inputChangeHandler} type="text" placeholder="Username"/>
-                    <input defaultValue={user.password} onChange={inputChangeHandler} type="password" placeholder="Password"/>
-                </div>
-                <button onClick={submitFormHandler} type="submit">Submit</button>
+        <div>
+            <form onSubmit={submitFormHandler} className="authorization">
+                <h2>Login</h2>
+                <input name="username" value={user.username} onChange={e => (inputChangeHandler(e))} type="text" placeholder="Username"/>
+                <input name="password" value={user.password} onChange={e => (inputChangeHandler(e))} type="password" placeholder="Password"/>
+                <button>Send</button>
             </form>
         </div>
     );

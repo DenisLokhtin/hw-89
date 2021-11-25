@@ -1,14 +1,11 @@
-.login {
+div {
     text-align: center;
 }
 
-.login form div {
+.authorization input {
     display: flex;
     flex-direction: column;
     width: 200px;
     margin-left: 42%;
-}
-
-.login form input {
-    margin: 5px;
+    margin-bottom: 20px;
 }
